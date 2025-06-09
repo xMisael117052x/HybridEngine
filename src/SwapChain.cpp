@@ -53,7 +53,7 @@ SwapChain::init(Device& device,
         numFeatureLevels,
         D3D11_SDK_VERSION,
         &device.m_device,
-        &m_featureLevel,
+        &this->m_featureLevel,
         &deviceContext.m_deviceContext);
 
     if (SUCCEEDED(hr)) {
@@ -68,11 +68,11 @@ SwapChain::init(Device& device,
     return hr;
   }
 
-  m_sampleCount = 4;
+  this->m_sampleCount = 4;
   hr = device.m_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 
-                                                      m_sampleCount, 
-                                                      &m_qualityLevels);
-  if (FAILED(hr) || m_qualityLevels == 0) {
+                                                      this->m_sampleCount, 
+                                                      &this->m_qualityLevels);
+  if (FAILED(hr) || this->m_qualityLevels == 0) {
     ERROR("SwapChain", "init",
       ("MSAA not supported or invalid quality level. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
@@ -90,32 +90,32 @@ SwapChain::init(Device& device,
   sd.OutputWindow = window.m_hWnd;
   sd.Windowed = TRUE; 
   sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-  sd.SampleDesc.Count = m_sampleCount;
-  sd.SampleDesc.Quality = m_qualityLevels - 1;
+  sd.SampleDesc.Count = this->m_sampleCount;
+  sd.SampleDesc.Quality = this->m_qualityLevels - 1;
 
-	hr = device.m_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice);
+	hr = device.m_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&this->m_dxgiDevice);
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to query IDXGIDevice. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-	hr = m_dxgiDevice->GetAdapter(&m_dxgiAdapter);
+	hr = this->m_dxgiDevice->GetAdapter(&this->m_dxgiAdapter);
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to get IDXGIAdapter. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-  hr = m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), 
-                                reinterpret_cast<void**>(&m_dxgiFactory));
+  hr = this->m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), 
+                                reinterpret_cast<void**>(&this->m_dxgiFactory));
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to get IDXGIFactory. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-  hr = m_dxgiFactory->CreateSwapChain(device.m_device, &sd, &m_swapChain);
+  hr = this->m_dxgiFactory->CreateSwapChain(device.m_device, &sd, &this->m_swapChain);
 
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
@@ -139,17 +139,17 @@ SwapChain::init(Device& device,
  */
 void 
 SwapChain::destroy() {
-  if (m_swapChain) {
-		SAFE_RELEASE(m_swapChain);
+  if (this->m_swapChain) {
+		SAFE_RELEASE(this->m_swapChain);
   }
-  if (m_dxgiDevice) {
-    SAFE_RELEASE(m_dxgiDevice);
+  if (this->m_dxgiDevice) {
+    SAFE_RELEASE(this->m_dxgiDevice);
   }
-  if (m_dxgiAdapter) {
-    SAFE_RELEASE(m_dxgiAdapter);
+  if (this->m_dxgiAdapter) {
+    SAFE_RELEASE(this->m_dxgiAdapter);
 	}
-  if (m_dxgiFactory) {
-    SAFE_RELEASE(m_dxgiFactory);
+  if (this->m_dxgiFactory) {
+    SAFE_RELEASE(this->m_dxgiFactory);
   }
 }
 
@@ -158,8 +158,8 @@ SwapChain::destroy() {
  */
 void 
 SwapChain::present() {
-  if (m_swapChain) {
-    HRESULT hr = m_swapChain->Present(0, 0);
+  if (this->m_swapChain) {
+    HRESULT hr = this->m_swapChain->Present(0, 0);
     if (FAILED(hr)) {
       ERROR("SwapChain", "present", 
         ("Failed to present swap chain. HRESULT: " + std::to_string(hr)).c_str());

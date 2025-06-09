@@ -184,7 +184,7 @@ HRESULT InitDevice()
 {
     HRESULT hr = S_OK;
 
-    hr = g_swapChain.init(g_device, g_deviceContext, g_backBuffer, g_window);
+    hr = g_swapChain.init(g_device, g_deviceContext, &g_backBuffer.m_texture, g_window);
 
     if (FAILED(hr))
     {

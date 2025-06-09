@@ -15,7 +15,7 @@ public:
     HRESULT
     init(Device & device, 
          DeviceContext & deviceContext, 
-         Texture & backBuffer, 
+         ID3D11Texture2D** backBuffer, 
          Window window);
 
     void 
@@ -53,4 +53,3 @@ private:
     IDXGIAdapter* m_dxgiAdapter = nullptr;
     IDXGIFactory* m_dxgiFactory = nullptr;
 };
-
