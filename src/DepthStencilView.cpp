@@ -26,9 +26,7 @@ DepthStencilView::init(Device& device, Texture& depthStencil, DXGI_FORMAT format
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
     descDSV.Texture2D.MipSlice = 0;
 
-    HRESULT hr = device.m_device->CreateDepthStencilView(depthStencil.m_texture, 
-                                                                                                             &descDSV, 
-                                                                                                             &m_depthStencilView);
+    HRESULT hr = device.m_device->CreateDepthStencilView(depthStencil.m_texture, &descDSV, &m_depthStencilView);
 
     if (FAILED(hr)) {
         ERROR("DepthStencilView", "init", 
@@ -50,10 +48,7 @@ DepthStencilView::render(DeviceContext& deviceContext) {
         return;
     }
 
-    deviceContext.m_deviceContext->ClearDepthStencilView(m_depthStencilView, 
-                                                                                                             D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 
-                                                                                                             1.0f, 
-                                                                                                             0);
+    deviceContext.m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 /**

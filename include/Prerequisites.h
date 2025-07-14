@@ -13,6 +13,7 @@
 #include <d3dcompiler.h>
 #include "Resource.h"
 
+
 // MACROS
 #define SAFE_RELEASE(x) if(x != nullptr) x->Release(); x = nullptr;
 
@@ -37,30 +38,36 @@ OutputDebugStringW(L"Failed to log error message.\n");\
 
 // Structures
 struct
-  SimpleVertex {
+    SimpleVertex {
   XMFLOAT3 Pos;
   XMFLOAT2 Tex;
 };
 
 struct
-  CBNeverChanges {
+    CBNeverChanges {
   XMMATRIX mView;
 };
 
 struct
-  CBChangeOnResize {
+    CBChangeOnResize {
   XMMATRIX mProjection;
 };
 
 struct
-  CBChangesEveryFrame {
+    CBChangesEveryFrame {
   XMMATRIX mWorld;
   XMFLOAT4 vMeshColor;
 };
 
-enum 
-ExtensionType {
+enum
+    ExtensionType {
   DDS = 0,
   PNG = 1,
   JPG = 2
+};
+
+enum
+    ShaderType {
+  VERTEX_SHADER = 0,
+  PIXEL_SHADER = 1
 };

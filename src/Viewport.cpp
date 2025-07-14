@@ -55,10 +55,7 @@ Viewport::init(unsigned int width, unsigned int height) {
  * @brief Establece la ventanilla en el contexto del dispositivo.
  * @param deviceContext El contexto del dispositivo Direct3D.
  */
-void Viewport::render(DeviceContext& deviceContext) {
-    if (!deviceContext.m_deviceContext) {
-        ERROR("Viewport", "render", "Device context is not set.");
-        return;
-    }
+void
+Viewport::render(DeviceContext& deviceContext) {
     deviceContext.RSSetViewports(1, &m_viewport);
 }
