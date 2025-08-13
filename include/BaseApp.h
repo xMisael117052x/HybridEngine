@@ -19,29 +19,29 @@
 #include "ECS\Actor.h"
 
 class
-BaseApp {
+    BaseApp {
 public:
-    BaseApp()  = default;
+    BaseApp() = default;
     ~BaseApp() = default;
 
     HRESULT
     init();
-	
-    void 
+
+    void
     update();
-	
-    void 
+
+    void
     render();
-	
-    void 
+
+    void
     destroy();
 
-    int 
-    run(HINSTANCE hInstance, 
-            HINSTANCE hPrevInstance, 
-            LPWSTR lpCmdLine, 
-            int nCmdShow, 
-            WNDPROC wndproc);
+    int
+    run(HINSTANCE hInstance,
+        HINSTANCE hPrevInstance,
+        LPWSTR lpCmdLine,
+        int nCmdShow,
+        WNDPROC wndproc);
 
 private:
     Window m_window;
@@ -55,7 +55,7 @@ private:
     Viewport m_viewport;
     ShaderProgram m_shaderProgram;
     ModelLoader m_modelLoader;
-    
+
     // Camera Buffers
     Buffer m_neverChanges;
     Buffer m_changeOnResize;
@@ -68,7 +68,7 @@ private:
     //----- Variables para el plano y la luz -----//
     XMFLOAT4 m_LightPos;
 
-    float ClearColor[4] = { 0.0f, 0.125f, 0.3f, 1.0f };
+    float ClearColor[4] = {0.0f, 0.125f, 0.3f, 1.0f};
 
     // Se eliminó el MeshComponent específico de la pistola.
     MeshComponent planeMesh;

@@ -14,21 +14,21 @@ class Actor;
 class ModelComponent;
 class Transform;
 
-class 
-UserInterface {
+class
+    UserInterface {
 public:
     UserInterface();
     ~UserInterface();
 
-    void 
+    void
     init(void* window, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-    void 
+    void
     update();
-  
-    void 
+
+    void
     render();
-  
+
     void
     vec3Control(const std::string& label,
                 float* values,
@@ -41,7 +41,7 @@ public:
                  float resetValue = 0.0f,
                  float columnWidth = 100.0f);
 
-    void 
+    void
     menuBar(Window window, SwapChain swapChain, Texture& backBuffer);
 
     void
@@ -50,7 +50,7 @@ public:
     void
     inspectorGeneral(EU::TSharedPointer<Actor> actor);
 
-    void 
+    void
     inspectorContainer(EU::TSharedPointer<Actor> actor);
 
     void
@@ -80,7 +80,7 @@ public:
 
     void
     darkStyle();
-  
+
     void
     greyStyle();
 
@@ -93,15 +93,15 @@ public:
     void
     ToolTip(std::string icon, std::string tip);
     void
-    ToolTip( std::string tip);
+    ToolTip(std::string tip);
 
     void
     toolTipData();
 
-    void 
+    void
     ToolBar();
 
-    void 
+    void
     closeApp();
 
     void

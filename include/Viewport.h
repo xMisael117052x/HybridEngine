@@ -3,25 +3,25 @@
 class Window;
 class DeviceContext;
 
-class 
-Viewport {
+class
+    Viewport {
 public:
     Viewport() = default;
     ~Viewport() = default;
 
     HRESULT
-  init(const Window & window);
-  
+    init(const Window& window);
+
     HRESULT
     init(unsigned int width, unsigned int height);
 
-    void 
+    void
     update();
-  
-    void 
+
+    void
     render(DeviceContext& deviceContext);
-  
-    void 
+
+    void
     destroy();
 
 public:

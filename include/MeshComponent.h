@@ -5,33 +5,40 @@
 class DeviceContext;
 
 class
-MeshComponent : public Component {
+    MeshComponent : public Component {
 public:
-    MeshComponent() : m_numVertex(0), m_numIndex(0), Component(ComponentType::MESH) {}
+    MeshComponent() :
+        m_numVertex(0), m_numIndex(0), Component(ComponentType::MESH) {
+    }
 
     virtual
     ~MeshComponent() = default;
 
     void
-    init() override {};
-  
+    init() override {
+    };
+
     /**
      * @brief Actualiza el actor.
      * @param deltaTime El tiempo transcurrido desde la última actualización.
      * @param deviceContext Contexto del dispositivo para operaciones gráficas.
      */
     void
-    update(float deltaTime) override {}
+    update(float deltaTime) override {
+    }
 
     /**
      * @brief Renderiza el actor.
      * @param deviceContext Contexto del dispositivo para operaciones gráficas.
      */
     void
-    render(DeviceContext& deviceContext) override {}
+    render(DeviceContext& deviceContext) override {
+    }
 
-    void 
-    destroy() override {}
+    void
+    destroy() override {
+    }
+
 public:
     std::string m_name;
     std::vector<SimpleVertex> m_vertex;

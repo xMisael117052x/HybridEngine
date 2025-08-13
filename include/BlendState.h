@@ -4,25 +4,26 @@
 class Device;
 class DeviceContext;
 
-class 
-BlendState {
+class
+    BlendState {
 public:
-    BlendState()  = default;
+    BlendState() = default;
     ~BlendState() = default;
 
     HRESULT
     init(Device& device);
 
-    void 
-        update() {};
+    void
+    update() {
+    };
 
-    void 
-    render(DeviceContext& deviceContext, 
-                 float* blendFactor = nullptr, 
-                 unsigned int sampleMask = 0xffffffff,
-                 bool reset = false);
+    void
+    render(DeviceContext& deviceContext,
+           float* blendFactor = nullptr,
+           unsigned int sampleMask = 0xffffffff,
+           bool reset = false);
 
-    void 
+    void
     destroy();
 
 private:

@@ -6,17 +6,20 @@ class Window;
 class SwapChain;
 class Texture;
 
-class 
-Screenshot {
+class
+    Screenshot {
 public:
     Screenshot() = default;
-    ~Screenshot() {};
+
+    ~Screenshot() {
+    };
 
     void
     captureScreenshot(Window window, SwapChain swapChain, Texture& backBuffer);
 
     void
     ui(Window window, SwapChain swapChain, Texture& backBuffer);
+
 private:
 
 };

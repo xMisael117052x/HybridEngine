@@ -5,10 +5,10 @@ class Device;
 class DeviceContext;
 class MeshComponent;
 
-class 
-Buffer {
+class
+    Buffer {
 public:
-    Buffer()  = default;
+    Buffer() = default;
     ~Buffer() = default;
 
     // Inicializa Vertex e Index Buffers 
@@ -21,13 +21,13 @@ public:
 
     // Actualiza los constant buffers a nivel logico
     void
-    update(DeviceContext& deviceContext, 
-         ID3D11Resource* pDstResource,
-         unsigned int DstSubresource,
-         const D3D11_BOX* pDstBox,
-         const void* pSrcData,
-         unsigned int SrcRowPitch,
-         unsigned int SrcDepthPitch);
+    update(DeviceContext& deviceContext,
+           ID3D11Resource* pDstResource,
+           unsigned int DstSubresource,
+           const D3D11_BOX* pDstBox,
+           const void* pSrcData,
+           unsigned int SrcRowPitch,
+           unsigned int SrcDepthPitch);
 
     // Actualiza en render el Vertex, Index y Constant Buffer
     void
@@ -38,14 +38,13 @@ public:
            DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN);
 
 
-    void 
+    void
     destroy();
 
     HRESULT
-    createBuffer(Device& device, 
-                 D3D11_BUFFER_DESC& desc, 
+    createBuffer(Device& device,
+                 D3D11_BUFFER_DESC& desc,
                  D3D11_SUBRESOURCE_DATA* initData);
-
 
 private:
     ID3D11Buffer* m_buffer = nullptr;

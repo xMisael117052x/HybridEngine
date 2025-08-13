@@ -4,22 +4,22 @@
 class Device;
 class DeviceContext;
 
-class 
-DepthStencilState {
+class
+    DepthStencilState {
 public:
-    DepthStencilState()  = default;
+    DepthStencilState() = default;
     ~DepthStencilState() = default;
 
-    HRESULT 
+    HRESULT
     init(Device& device, bool enableDepth = true, bool enableStencil = false);
 
-    void 
-    update(); 
+    void
+    update();
 
-    void 
+    void
     render(DeviceContext& deviceContext, unsigned int stencilRef = 0, bool reset = false);
 
-    void 
+    void
     destroy();
 
 private:

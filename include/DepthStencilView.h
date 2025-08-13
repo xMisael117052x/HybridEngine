@@ -5,22 +5,22 @@ class Device;
 class DeviceContext;
 class Texture;
 
-class 
-DepthStencilView {
+class
+    DepthStencilView {
 public:
-    DepthStencilView()  = default;
+    DepthStencilView() = default;
     ~DepthStencilView() = default;
 
     HRESULT
-    init(Device & device, Texture & depthStencil, DXGI_FORMAT format);
-	
-    void 
+    init(Device& device, Texture& depthStencil, DXGI_FORMAT format);
+
+    void
     update();
-	
-    void 
+
+    void
     render(DeviceContext& deviceContext);
-	
-    void 
+
+    void
     destroy();
 
 public:

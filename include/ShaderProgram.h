@@ -5,48 +5,49 @@
 class Device;
 class DeviceContext;
 
-class 
-ShaderProgram {
+class
+    ShaderProgram {
 public:
-    ShaderProgram ()  = default;
-    ~ShaderProgram () = default;
+    ShaderProgram() = default;
+    ~ShaderProgram() = default;
 
-    HRESULT 
-    init(Device& device, 
-         const std::string& fileName, 
+    HRESULT
+    init(Device& device,
+         const std::string& fileName,
          std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
 
-    void 
+    void
     update();
-  
-    void 
+
+    void
     render(DeviceContext& deviceContext);
-  
-    void 
+
+    void
     render(DeviceContext& deviceContext, ShaderType type);
-  
-    void 
+
+    void
     destroy();
 
     HRESULT
-    CreateInputLayout(Device & device, std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
+    CreateInputLayout(Device& device, std::vector<D3D11_INPUT_ELEMENT_DESC> Layout);
 
     HRESULT
-    CreateShader(Device & device, ShaderType type);
-  
-    HRESULT
-    CreateShader(Device & device, ShaderType type, const std::string& fileName);
+    CreateShader(Device& device, ShaderType type);
 
-    HRESULT 
-    CompileShaderFromFile(char* szFileName, 
-                          LPCSTR szEntryPoint, 
-                          LPCSTR szShaderModel, 
+    HRESULT
+    CreateShader(Device& device, ShaderType type, const std::string& fileName);
+
+    HRESULT
+    CompileShaderFromFile(char* szFileName,
+                          LPCSTR szEntryPoint,
+                          LPCSTR szShaderModel,
                           ID3DBlob** ppBlobOut);
 
 public:
     ID3D11VertexShader* m_VertexShader = nullptr;
     ID3D11PixelShader* m_PixelShader = nullptr;
     InputLayout m_inputLayout;
+
 private:
     std::string m_shaderFileName;
     ID3DBlob* m_vertexShaderData = nullptr;

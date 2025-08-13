@@ -7,35 +7,35 @@ class DeviceContext;
 class Texture;
 class DepthStencilView;
 
-class 
-RenderTargetView {
+class
+    RenderTargetView {
 public:
-    RenderTargetView()  = default;
+    RenderTargetView() = default;
     ~RenderTargetView() = default;
 
     HRESULT
-  init(Device& device, Texture &backBuffer, DXGI_FORMAT Format);
-  
+    init(Device& device, Texture& backBuffer, DXGI_FORMAT Format);
+
     HRESULT
-    init(Device& device, 
-         Texture& inTex, 
-         D3D11_RTV_DIMENSION ViewDimension, 
+    init(Device& device,
+         Texture& inTex,
+         D3D11_RTV_DIMENSION ViewDimension,
          DXGI_FORMAT Format);
 
-    void 
+    void
     update();
-  
-    void 
-    render(DeviceContext & deviceContext, 
-           DepthStencilView & depthStencilView, 
-           unsigned int numViews, 
+
+    void
+    render(DeviceContext& deviceContext,
+           DepthStencilView& depthStencilView,
+           unsigned int numViews,
            const float ClearColor[4]);
-  
-    void 
-    render(DeviceContext & deviceContext, 
+
+    void
+    render(DeviceContext& deviceContext,
            unsigned int numViews);
-  
-    void 
+
+    void
     destroy();
 
 private:

@@ -5,7 +5,7 @@ class Device;
 class DeviceContext;
 
 class
-SamplerState {
+    SamplerState {
 public:
     SamplerState() = default;
     ~SamplerState() = default;

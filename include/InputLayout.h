@@ -4,24 +4,24 @@
 class Device;
 class DeviceContext;
 
-class 
-InputLayout {
+class
+    InputLayout {
 public:
-    InputLayout()  = default;
+    InputLayout() = default;
     ~InputLayout() = default;
 
     HRESULT
-  init(Device& device, 
-       std::vector<D3D11_INPUT_ELEMENT_DESC>& Layout, 
-       ID3DBlob* VertexShaderData);
+    init(Device& device,
+         std::vector<D3D11_INPUT_ELEMENT_DESC>& Layout,
+         ID3DBlob* VertexShaderData);
 
-    void 
+    void
     update();
-  
-    void 
+
+    void
     render(DeviceContext& deviceContext);
-  
-    void 
+
+    void
     destroy();
 
 public:

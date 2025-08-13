@@ -4,22 +4,22 @@
 class Device;
 class DeviceContext;
 
-class 
-Rasterizer {
+class
+    Rasterizer {
 public:
-    Rasterizer()  = default;
+    Rasterizer() = default;
     ~Rasterizer() = default;
 
     HRESULT
-  init(Device device);
+    init(Device device);
 
-    void 
+    void
     update();
-  
-    void 
+
+    void
     render(DeviceContext& deviceContext);
-  
-    void 
+
+    void
     destroy();
 
 private:
