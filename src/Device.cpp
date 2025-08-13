@@ -1,24 +1,15 @@
 ﻿#include "Device.h"
 
-/**
- * @brief Libera el dispositivo Direct3D.
- */
 void
 Device::destroy() {
 	SAFE_RELEASE(m_device);
 }
 
-/**
- * @brief Crea una vista de destino de renderizado.
- * @param pResource El recurso de destino de renderizado.
- * @param pDesc La descripción de la vista de destino de renderizado.
- * @param ppRTView Puntero a la vista de destino de renderizado creada.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateRenderTargetView(ID3D11Resource* pResource,
 	const D3D11_RENDER_TARGET_VIEW_DESC* pDesc,
 	ID3D11RenderTargetView** ppRTView) {
+	// Validar parametros de entrada
 	if (!pResource) {
 		ERROR("Device", "CreateRenderTargetView", "pResource is nullptr");
 		return E_INVALIDARG;
@@ -28,6 +19,7 @@ Device::CreateRenderTargetView(ID3D11Resource* pResource,
 		return E_POINTER;
 	}
 
+	// Crear el Render Target View
 	HRESULT hr = m_device->CreateRenderTargetView(pResource, pDesc, ppRTView);
 
 	if (SUCCEEDED(hr)) {
@@ -42,17 +34,11 @@ Device::CreateRenderTargetView(ID3D11Resource* pResource,
 	return hr;
 }
 
-/**
- * @brief Crea una textura 2D.
- * @param pDesc La descripción de la textura 2D.
- * @param pInitialData Los datos iniciales de la textura.
- * @param ppTexture2D Puntero a la textura 2D creada.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc,
 												const D3D11_SUBRESOURCE_DATA* pInitialData,
 												ID3D11Texture2D** ppTexture2D) {
+	// Validar parametros de entrada
 	if (!pDesc) {
 		ERROR("Device", "CreateTexture2D", "pDesc is nullptr");
 		return E_INVALIDARG;
@@ -62,6 +48,7 @@ Device::CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc,
 		return E_POINTER;
 	}
 
+	// Crear la textura 2D
 	HRESULT hr = m_device->CreateTexture2D(pDesc, pInitialData, ppTexture2D);
 
 	if (SUCCEEDED(hr)) {
@@ -76,17 +63,11 @@ Device::CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc,
 	return hr;
 }
 
-/**
- * @brief Crea una vista de plantilla de profundidad.
- * @param pResource El recurso de plantilla de profundidad.
- * @param pDesc La descripción de la vista de plantilla de profundidad.
- * @param ppDepthStencilView Puntero a la vista de plantilla de profundidad creada.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateDepthStencilView(ID3D11Resource* pResource,
 	const D3D11_DEPTH_STENCIL_VIEW_DESC* pDesc,
 	ID3D11DepthStencilView** ppDepthStencilView) {
+	// Validar parametros de entrada
 	if (!pResource) {
 		ERROR("Device", "CreateDepthStencilView", "pResource is nullptr");
 		return E_INVALIDARG;
@@ -96,6 +77,7 @@ Device::CreateDepthStencilView(ID3D11Resource* pResource,
 		return E_POINTER;
 	}
 
+	// Crear el Depth Stencil View
 	HRESULT hr = m_device->CreateDepthStencilView(pResource, pDesc, ppDepthStencilView);
 
 	if (SUCCEEDED(hr)) {
@@ -110,19 +92,12 @@ Device::CreateDepthStencilView(ID3D11Resource* pResource,
 	return hr;
 }
 
-/**
- * @brief Crea un sombreador de vértices.
- * @param pShaderBytecode Puntero al bytecode del sombreador.
- * @param BytecodeLength Longitud del bytecode del sombreador.
- * @param pClassLinkage Puntero a la interfaz de enlace de clases.
- * @param ppVertexShader Puntero al sombreador de vértices creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateVertexShader(const void* pShaderBytecode,
 	unsigned int BytecodeLength,
 	ID3D11ClassLinkage* pClassLinkage,
 	ID3D11VertexShader** ppVertexShader) {
+	// Validar parametros de entrada
 	if (!pShaderBytecode) {
 		ERROR("Device", "CreateVertexShader", "pShaderBytecode is nullptr");
 		return E_INVALIDARG;
@@ -132,6 +107,7 @@ Device::CreateVertexShader(const void* pShaderBytecode,
 		return E_POINTER;
 	}
 
+	// Crear el Vertex Shader
 	HRESULT hr = m_device->CreateVertexShader(pShaderBytecode,
 		BytecodeLength,
 		pClassLinkage,
@@ -149,21 +125,13 @@ Device::CreateVertexShader(const void* pShaderBytecode,
 	return hr;
 }
 
-/**
- * @brief Crea un diseño de entrada.
- * @param pInputElementDescs Descripciones de los elementos de entrada.
- * @param NumElements Número de elementos de entrada.
- * @param pShaderBytecodeWithInputSignature Puntero al bytecode del sombreador con firma de entrada.
- * @param BytecodeLength Longitud del bytecode del sombreador.
- * @param ppInputLayout Puntero al diseño de entrada creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 	unsigned int NumElements,
 	const void* pShaderBytecodeWithInputSignature,
 	unsigned int BytecodeLength,
 	ID3D11InputLayout** ppInputLayout) {
+	// Validar parametros de entrada
 	if (!pInputElementDescs) {
 		ERROR("Device", "CreateInputLayout", "pInputElementDescs is nullptr");
 		return E_INVALIDARG;
@@ -173,6 +141,7 @@ Device::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 		return E_POINTER;
 	}
 
+	// Crear el Input Layout
 	HRESULT hr = m_device->CreateInputLayout(pInputElementDescs,
 		NumElements,
 		pShaderBytecodeWithInputSignature,
@@ -191,19 +160,12 @@ Device::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 	return hr;
 }
 
-/**
- * @brief Crea un sombreador de píxeles.
- * @param pShaderBytecode Puntero al bytecode del sombreador.
- * @param BytecodeLength Longitud del bytecode del sombreador.
- * @param pClassLinkage Puntero a la interfaz de enlace de clases.
- * @param ppPixelShader Puntero al sombreador de píxeles creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreatePixelShader(const void* pShaderBytecode,
 	unsigned int BytecodeLength,
 	ID3D11ClassLinkage* pClassLinkage,
 	ID3D11PixelShader** ppPixelShader) {
+	// Validar parametros de entrada
 	if (!pShaderBytecode) {
 		ERROR("Device", "CreatePixelShader", "pShaderBytecode is nullptr");
 		return E_INVALIDARG;
@@ -213,6 +175,7 @@ Device::CreatePixelShader(const void* pShaderBytecode,
 		return E_POINTER;
 	}
 
+	// Crear el Pixel Shader
 	HRESULT hr = m_device->CreatePixelShader(pShaderBytecode,
 		BytecodeLength,
 		pClassLinkage,
@@ -230,15 +193,10 @@ Device::CreatePixelShader(const void* pShaderBytecode,
 	return hr;
 }
 
-/**
- * @brief Crea un estado de muestreador.
- * @param pSamplerDesc La descripción del estado de muestreador.
- * @param ppSamplerState Puntero al estado de muestreador creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 	ID3D11SamplerState** ppSamplerState) {
+	// Validar parametros de entrada
 	if (!pSamplerDesc) {
 		ERROR("Device", "CreateSamplerState", "pSamplerDesc is nullptr");
 		return E_INVALIDARG;
@@ -248,6 +206,7 @@ Device::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 		return E_POINTER;
 	}
 
+	// Crear el Sampler State
 	HRESULT hr = m_device->CreateSamplerState(pSamplerDesc, ppSamplerState);
 
 	if (SUCCEEDED(hr)) {
@@ -262,17 +221,11 @@ Device::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc,
 	return hr;
 }
 
-/**
- * @brief Crea un búfer.
- * @param pDesc La descripción del búfer.
- * @param pInitialData Los datos iniciales del búfer.
- * @param ppBuffer Puntero al búfer creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT
 Device::CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 	const D3D11_SUBRESOURCE_DATA* pInitialData,
 	ID3D11Buffer** ppBuffer) {
+	// Validar parametros de entrada
 	if (!pDesc) {
 		ERROR("Device", "CreateBuffer", "pDesc is nullptr");
 		return E_INVALIDARG;
@@ -282,6 +235,7 @@ Device::CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 		return E_POINTER;
 	}
 
+	// Crear el Buffer
 	HRESULT hr = m_device->CreateBuffer(pDesc, pInitialData, ppBuffer);
 
 	if (SUCCEEDED(hr)) {
@@ -296,15 +250,10 @@ Device::CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 	return hr;
 }
 
-/**
- * @brief Crea un estado de mezcla.
- * @param pBlendStateDesc La descripción del estado de mezcla.
- * @param ppBlendState Puntero al estado de mezcla creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Device::CreateBlendState(const D3D11_BLEND_DESC* pBlendStateDesc, 
 												 ID3D11BlendState** ppBlendState) {
+	// Validar parametros de entrada
 	if (!pBlendStateDesc) {
 		ERROR("Device", "CreateBlendState", "pBlendStateDesc is nullptr");
 		return E_INVALIDARG;
@@ -314,6 +263,7 @@ Device::CreateBlendState(const D3D11_BLEND_DESC* pBlendStateDesc,
 		return E_POINTER;
 	}
 
+	// Crear el Blend State
 	HRESULT hr = m_device->CreateBlendState(pBlendStateDesc, ppBlendState);
 	
 	if (SUCCEEDED(hr)) {
@@ -327,15 +277,10 @@ Device::CreateBlendState(const D3D11_BLEND_DESC* pBlendStateDesc,
 	return hr;
 }
 
-/**
- * @brief Crea un estado de plantilla de profundidad.
- * @param pDepthStencilDesc La descripción del estado de plantilla de profundidad.
- * @param ppDepthStencilState Puntero al estado de plantilla de profundidad creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Device::CreateDepthStencilState(const D3D11_DEPTH_STENCIL_DESC* pDepthStencilDesc, 
 																ID3D11DepthStencilState** ppDepthStencilState) {
+	// Validar parametros de entrada
 	if (!pDepthStencilDesc) {
 		ERROR("Device", "CreateDepthStencilState", "pDepthStencilDesc is nullptr");
 		return E_INVALIDARG;
@@ -345,6 +290,7 @@ Device::CreateDepthStencilState(const D3D11_DEPTH_STENCIL_DESC* pDepthStencilDes
 		return E_POINTER;
 	}	
 
+	// Crear el Depth Stencil State
 	HRESULT hr = m_device->CreateDepthStencilState(pDepthStencilDesc, ppDepthStencilState);
 
 	if (SUCCEEDED(hr)) {
@@ -359,15 +305,10 @@ Device::CreateDepthStencilState(const D3D11_DEPTH_STENCIL_DESC* pDepthStencilDes
 	return hr;
 }
 
-/**
- * @brief Crea un estado de rasterizador.
- * @param pRasterizerDesc La descripción del estado de rasterizador.
- * @param ppRasterizerState Puntero al estado de rasterizador creado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Device::CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc, 
 															ID3D11RasterizerState** ppRasterizerState) {
+	// Validar parametros de entrada
 	if (!pRasterizerDesc) {
 		ERROR("Device", "CreateRasterizerState", "pRasterizerDesc is nullptr");
 		return E_INVALIDARG;
@@ -377,6 +318,7 @@ Device::CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc,
 		return E_POINTER;
 	}
 
+	// Crear el Rasterizer State
 	HRESULT hr = m_device->CreateRasterizerState(pRasterizerDesc, ppRasterizerState);
 
 	if (SUCCEEDED(hr)) {

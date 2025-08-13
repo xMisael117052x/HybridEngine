@@ -1,72 +1,131 @@
 ﻿#pragma once
 #include "Prerequisites.h"
 #include "imgui.h"
+#include <imgui_internal.h>
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
-#include "imgui_internal.h"
+#include <commdlg.h>  // Para el diálogo de archivo
+#include <functional>
 
-/**
- * @brief Clase que gestiona la interfaz de usuario utilizando ImGui.
- */
-class
-    UserInterface {
+class Window;
+class SwapChain;
+class Texture;
+class Actor;
+class ModelComponent;
+class Transform;
+
+class 
+UserInterface {
 public:
-    /**
-     * @brief Constructor por defecto.
-     */
-    UserInterface() = default;
-    
-    /**
-     * @brief Destructor por defecto.
-     */
-    ~UserInterface() = default;
+    UserInterface();
+    ~UserInterface();
 
-    /**
-     * @brief Inicializa la interfaz de usuario.
-     * @param window Puntero a la ventana donde se mostrará la interfaz.
-     * @param device Puntero al dispositivo DirectX.
-     * @param deviceContext Puntero al contexto del dispositivo DirectX.
-     */
-    void
+    void 
     init(void* window, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-    /**
-     * @brief Actualiza la interfaz de usuario en cada fotograma.
-     */
-    void
+    void 
     update();
-
-    /**
-     * @brief Renderiza la interfaz de usuario en cada fotograma.
-     */
-    void
+  
+    void 
     render();
-
-    /**
-     * @brief Libera los recursos utilizados por la interfaz de usuario.
-     */
+  
     void
-    destroy();
+    vec3Control(const std::string& label,
+                float* values,
+                float resetValue = 0.0f,
+                float columnWidth = 100.0f);
 
-    /**
-     * @brief Crea un control para editar un vector de 3 componentes.
-     * @param label Etiqueta del control.
-     * @param values Puntero a los valores a editar.
-     * @param resetValue Valor al que se restablecen los componentes al hacer clic en el botón de reinicio.
-     * @param columnWidth Ancho de las columnas del control.
-     */
     void
-    vec3Control(std::string label, float* values, float resetValue = 0.0f, float columnWidth = 100.0f);
+    floatControl(const std::string& label,
+                 float* value,
+                 float resetValue = 0.0f,
+                 float columnWidth = 100.0f);
 
-    /**
-     * @brief Crea un control para editar un valor flotante.
-     * @param label Etiqueta del control.
-     * @param value Puntero al valor a editar.
-     * @param resetValue Valor al que se restablece al hacer clic en el botón de reinicio.
-     * @param columnWidth Ancho de las columnas del control.
-     */
+    void 
+    menuBar(Window window, SwapChain swapChain, Texture& backBuffer);
+
     void
-    floatControl(const std::string& label, float* value, float resetValue = 0.0f, float columnWidth = 100.0f);
+    Renderer(Window window, ID3D11ShaderResourceView* renderTexture);
+
+    void
+    inspectorGeneral(EU::TSharedPointer<Actor> actor);
+
+    void 
+    inspectorContainer(EU::TSharedPointer<Actor> actor);
+
+    void
+    output();
+
+    // Nuevas funciones para la interfaz mejorada
+    void
+    mainMenuBar();
+
+    void
+    objectControlPanel(EU::TSharedPointer<Actor> actor);
+
+    void
+    transformControls(EU::TSharedPointer<Actor> actor);
+
+    void
+    scaleControls(EU::TSharedPointer<Actor> actor);
+
+    void
+    rotationControls(EU::TSharedPointer<Actor> actor);
+
+    std::string
+    openFileDialog(const char* filter);
+
+    void
+    showImportDialog();
+
+    void
+    darkStyle();
+  
+    void
+    greyStyle();
+
+    void
+    GameMakerStyle();
+
+    void
+    visualStudioStyle();
+
+    void
+    ToolTip(std::string icon, std::string tip);
+    void
+    ToolTip( std::string tip);
+
+    void
+    toolTipData();
+
+    void 
+    ToolBar();
+
+    void 
+    closeApp();
+
+    void
+    RenderFullScreenTransparentWindow();
+
+    void
+    outliner(const std::vector<EU::TSharedPointer<Actor>>& actors);
 
 private:
+    bool checkboxValue = true;
+    bool checkboxValue2 = false;
+    std::vector<const char*> m_objectsNames;
+    std::vector<const char*> m_tooltips;
+
+    bool show_exit_popup = false; // Variable de estado para el popup
+    // Nuevas variables para la interfaz
+    bool show_import_dialog = false;
+    std::string selectedFilePath = "";
+    bool showObjectControls = true;
+    HWND m_windowHandle = nullptr;
+
+public:
+    int selectedActorIndex = -1;
+    // El callback ahora necesita dos rutas: una para el modelo y otra para la textura
+    std::function<void(const std::string&, const std::string&)> onImportModel;
+    std::function<void()> onExitApplication;
 };

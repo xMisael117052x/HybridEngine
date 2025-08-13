@@ -1,53 +1,42 @@
 ﻿#pragma once
-#include "OBJ_Loader.h"
 #include "Prerequisites.h"
+#include "MeshComponent.h"
+#include "fbxsdk.h"
 
-class MeshComponent;
-
-/**
- * @brief Clase responsable de cargar modelos 3D desde archivos externos.
- */
-class ModelLoader {
+class 
+ModelLoader {
 public:
-    /**
-     * @brief Constructor por defecto.
-     */
     ModelLoader() = default;
-    
-    /**
-     * @brief Destructor por defecto.
-     */
     ~ModelLoader() = default;
 
-    /**
-     * @brief Inicializa el cargador de modelos.
-     */
-    void
-    init();
-
-    /**
-     * @brief Actualiza el estado del cargador de modelos si es necesario.
-     */
-    void
-    update();
-
-    /**
-     * @brief Realiza operaciones de renderizado si es necesario.
-     */
-    void
-    render();
-
-    /**
-     * @brief Libera los recursos utilizados por el cargador de modelos.
-     */
-    void
-    destroy();
-
-    /**
-     * @brief Carga un modelo desde un archivo.
-     * @param filename Ruta del archivo a cargar.
-     * @return Un componente de malla que representa el modelo cargado.
-     */
+    /* OBJ MODEL LOADER*/
     MeshComponent
-    Load(const std::string& filename);
+    LoadOBJModel(const std::string & filePath);
+
+    /* FBX MODEL LOADER*/
+    bool
+    InitializeFBXManager();
+
+    bool 
+    LoadFBXModel(const std::string & filePath);
+
+    void 
+  ProcessFBXNode(FbxNode* node);
+
+    void 
+    ProcessFBXMesh(FbxNode* node);
+
+    void 
+    ProcessFBXMaterials(FbxSurfaceMaterial* material);
+
+    std::vector<std::string> 
+  GetTextureFileNames() const { return textureFileNames; }
+
+private:
+    FbxManager* lSdkManager;
+    FbxScene* lScene;
+    std::vector<std::string> textureFileNames;
+public:
+    std::string modelName;
+    std::vector<MeshComponent> meshes;
 };

@@ -2,11 +2,6 @@
 #include "Window.h"
 #include "DeviceContext.h"
 
-/**
- * @brief Inicializa la ventanilla utilizando las dimensiones de una ventana.
- * @param window La ventana de la aplicación.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Viewport::init(const Window& window) {
     if (!window.m_hWnd) {
@@ -28,12 +23,6 @@ Viewport::init(const Window& window) {
     return S_OK;
 }
 
-/**
- * @brief Inicializa la ventanilla con dimensiones específicas.
- * @param width El ancho de la ventanilla.
- * @param height El alto de la ventanilla.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Viewport::init(unsigned int width, unsigned int height) {
     if (width == 0 || height == 0) {
@@ -51,11 +40,10 @@ Viewport::init(unsigned int width, unsigned int height) {
     return S_OK;
 }
 
-/**
- * @brief Establece la ventanilla en el contexto del dispositivo.
- * @param deviceContext El contexto del dispositivo Direct3D.
- */
-void
-Viewport::render(DeviceContext& deviceContext) {
+void Viewport::render(DeviceContext& deviceContext) {
+    if (!deviceContext.m_deviceContext) {
+        ERROR("Viewport", "render", "Device context is not set.");
+        return;
+    }
     deviceContext.RSSetViewports(1, &m_viewport);
 }

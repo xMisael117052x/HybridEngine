@@ -1,21 +1,15 @@
 ﻿#include "SwapChain.h"
 #include "Device.h"
 #include "DeviceContext.h"
+#include "Texture.h"
 #include "Window.h"
 
-/**
- * @brief Inicializa la cadena de intercambio.
- * @param device El dispositivo Direct3D.
- * @param deviceContext El contexto del dispositivo Direct3D.
- * @param backBuffer La textura del búfer de reserva (ID3D11Texture2D**).
- * @param window La ventana de la aplicación.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 SwapChain::init(Device& device, 
 								DeviceContext& deviceContext, 
-								ID3D11Texture2D** backBuffer, // Cambiado para aceptar ID3D11Texture2D** directamente
+								Texture& backBuffer, 
 								Window window) {
+	// Check if Window is valid
 	if (!window.m_hWnd) {
 		ERROR("SwapChain", "init", "Invalid window handle. (m_hWnd is nullptr)");
 		return E_POINTER;
@@ -23,6 +17,7 @@ SwapChain::init(Device& device,
 
 	HRESULT hr = S_OK;
 
+	// Create the swap chain device and context
   unsigned int createDeviceFlags = 0;
 #ifdef _DEBUG
   createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -42,6 +37,7 @@ SwapChain::init(Device& device,
   };
   unsigned int numFeatureLevels = ARRAYSIZE(featureLevels);
 
+  // Create the device
   for (unsigned int driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++) {
     D3D_DRIVER_TYPE driverType = driverTypes[driverTypeIndex];
     hr = D3D11CreateDevice(
@@ -53,7 +49,7 @@ SwapChain::init(Device& device,
         numFeatureLevels,
         D3D11_SDK_VERSION,
         &device.m_device,
-        &this->m_featureLevel,
+        &m_featureLevel,
         &deviceContext.m_deviceContext);
 
     if (SUCCEEDED(hr)) {
@@ -68,16 +64,18 @@ SwapChain::init(Device& device,
     return hr;
   }
 
-  this->m_sampleCount = 4;
+	// Config the MSAA settings
+  m_sampleCount = 4;
   hr = device.m_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 
-                                                      this->m_sampleCount, 
-                                                      &this->m_qualityLevels);
-  if (FAILED(hr) || this->m_qualityLevels == 0) {
+                                                      m_sampleCount, 
+                                                      &m_qualityLevels);
+  if (FAILED(hr) || m_qualityLevels == 0) {
     ERROR("SwapChain", "init",
       ("MSAA not supported or invalid quality level. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
   }
 
+	// Config the swap chain description
   DXGI_SWAP_CHAIN_DESC sd;
   memset(&sd,0, sizeof(sd));
   sd.BufferCount = 1;
@@ -90,32 +88,34 @@ SwapChain::init(Device& device,
   sd.OutputWindow = window.m_hWnd;
   sd.Windowed = TRUE; 
   sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-  sd.SampleDesc.Count = this->m_sampleCount;
-  sd.SampleDesc.Quality = this->m_qualityLevels - 1;
+  sd.SampleDesc.Count = m_sampleCount;
+  sd.SampleDesc.Quality = m_qualityLevels - 1;
 
-	hr = device.m_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&this->m_dxgiDevice);
+	// Get the DXGI factory
+	hr = device.m_device->QueryInterface(__uuidof(IDXGIDevice), (void**)&m_dxgiDevice);
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to query IDXGIDevice. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-	hr = this->m_dxgiDevice->GetAdapter(&this->m_dxgiAdapter);
+	hr = m_dxgiDevice->GetAdapter(&m_dxgiAdapter);
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to get IDXGIAdapter. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-  hr = this->m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), 
-                                reinterpret_cast<void**>(&this->m_dxgiFactory));
+  hr = m_dxgiAdapter->GetParent(__uuidof(IDXGIFactory), 
+                                reinterpret_cast<void**>(&m_dxgiFactory));
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to get IDXGIFactory. HRESULT: " + std::to_string(hr)).c_str());
     return hr;
 	}
 
-  hr = this->m_dxgiFactory->CreateSwapChain(device.m_device, &sd, &this->m_swapChain);
+  // Create the swap chain
+  hr = m_dxgiFactory->CreateSwapChain(device.m_device, &sd, &m_swapChain);
 
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
@@ -123,8 +123,9 @@ SwapChain::init(Device& device,
     return hr;
 	}
 
+	// Get the backbuffer
   hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), 
-                              reinterpret_cast<void**>(backBuffer)); // Se usa directamente backBuffer
+                              reinterpret_cast<void**>(&backBuffer));
   if (FAILED(hr)) {
     ERROR("SwapChain", "init", 
       ("Failed to get back buffer. HRESULT: " + std::to_string(hr)).c_str());
@@ -134,32 +135,27 @@ SwapChain::init(Device& device,
 	return S_OK;
 }
 
-/**
- * @brief Libera los recursos de la cadena de intercambio.
- */
+
 void 
 SwapChain::destroy() {
-  if (this->m_swapChain) {
-		SAFE_RELEASE(this->m_swapChain);
+  if (m_swapChain) {
+		SAFE_RELEASE(m_swapChain);
   }
-  if (this->m_dxgiDevice) {
-    SAFE_RELEASE(this->m_dxgiDevice);
+  if (m_dxgiDevice) {
+    SAFE_RELEASE(m_dxgiDevice);
   }
-  if (this->m_dxgiAdapter) {
-    SAFE_RELEASE(this->m_dxgiAdapter);
+  if (m_dxgiAdapter) {
+    SAFE_RELEASE(m_dxgiAdapter);
 	}
-  if (this->m_dxgiFactory) {
-    SAFE_RELEASE(this->m_dxgiFactory);
+  if (m_dxgiFactory) {
+    SAFE_RELEASE(m_dxgiFactory);
   }
 }
 
-/**
- * @brief Presenta el contenido de la cadena de intercambio.
- */
 void 
 SwapChain::present() {
-  if (this->m_swapChain) {
-    HRESULT hr = this->m_swapChain->Present(0, 0);
+  if (m_swapChain) {
+    HRESULT hr = m_swapChain->Present(0, 0);
     if (FAILED(hr)) {
       ERROR("SwapChain", "present", 
         ("Failed to present swap chain. HRESULT: " + std::to_string(hr)).c_str());

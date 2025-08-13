@@ -1,16 +1,11 @@
 ﻿#include "Window.h"
 
-/**
- * @brief Inicializa la ventana de la aplicación.
- * @param hInstance El manejador de la instancia de la aplicación.
- * @param nCmdShow El modo de visualización de la ventana.
- * @param wndproc El procedimiento de ventana.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
+    // Store  instance of the class
     m_hInst = hInstance;
 
+    // Register class
     WNDCLASSEX wcex;
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -31,6 +26,7 @@ Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
         return E_FAIL;
     }
 
+    // Create window
     RECT rc = { 0, 0, 1200, 1010 };
     m_rect = rc;
 
@@ -58,29 +54,21 @@ Window::init(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc) {
 
     UpdateWindow(m_hWnd);
 
+    // Setup Viewport Dimensions
     GetClientRect(m_hWnd, &m_rect);
     m_width = m_rect.right - m_rect.left;
     m_height = m_rect.bottom - m_rect.top;
     return S_OK;
 }
 
-/**
- * @brief Función que actualiza el estado de la ventana.
- */
 void
 Window::update() {
 }
 
-/**
- * @brief Renderiza el contenido de la ventana.
- */
 void 
 Window::render() {
 }
 
-/**
- * @brief Libera los recursos de la ventana.
- */
 void 
 Window::destroy() {
 }

@@ -32,6 +32,7 @@ InputLayout::init(Device& device,
 
 void
 InputLayout::update() {
+    // Método vacío, se puede utilizar en caso de necesitar cambios dinámicos en el layout
 }
 
 void
@@ -41,7 +42,7 @@ InputLayout::render(DeviceContext& deviceContext) {
         return;
     }
 
-    deviceContext.IASetInputLayout(m_inputLayout);
+    deviceContext.m_deviceContext->IASetInputLayout(m_inputLayout);
 }
 
 void

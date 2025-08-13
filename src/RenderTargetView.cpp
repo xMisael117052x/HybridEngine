@@ -4,13 +4,6 @@
 #include "DeviceContext.h"
 #include "DepthStencilView.h"
 
-/**
- * @brief Inicializa la vista de destino de renderizado.
- * @param device El dispositivo Direct3D.
- * @param backBuffer La textura del búfer de reserva.
- * @param Format El formato de la vista de destino de renderizado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 RenderTargetView::init(Device& device, Texture& backBuffer, DXGI_FORMAT Format) {
 	if (!device.m_device) {
@@ -26,11 +19,13 @@ RenderTargetView::init(Device& device, Texture& backBuffer, DXGI_FORMAT Format) 
 		return E_INVALIDARG;
 	}
 
+	// Config the description for the render target view
 	D3D11_RENDER_TARGET_VIEW_DESC desc;
 	memset(&desc, 0, sizeof(desc));
 	desc.Format = Format;
 	desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
 
+	// Create the render target view
 	HRESULT hr = device.m_device->CreateRenderTargetView(backBuffer.m_texture, 
 																											 &desc, 
 																											 &m_renderTargetView);
@@ -43,14 +38,6 @@ RenderTargetView::init(Device& device, Texture& backBuffer, DXGI_FORMAT Format) 
 	return S_OK;
 }
 
-/**
- * @brief Inicializa la vista de destino de renderizado.
- * @param device El dispositivo Direct3D.
- * @param inTex La textura de entrada.
- * @param ViewDimension La dimensión de la vista.
- * @param Format El formato de la vista de destino de renderizado.
- * @return HRESULT El resultado de la operación.
- */
 HRESULT 
 RenderTargetView::init(Device& device, 
 											 Texture& inTex, 
@@ -69,11 +56,13 @@ RenderTargetView::init(Device& device,
 		return E_INVALIDARG;
 	}
 
+	// Config the description for the render target view
 	D3D11_RENDER_TARGET_VIEW_DESC desc;
 	memset(&desc, 0, sizeof(desc));
 	desc.Format = Format;
 	desc.ViewDimension = ViewDimension;
 
+	// Create the render target view
 	HRESULT hr = device.m_device->CreateRenderTargetView(inTex.m_texture, 
 																											 &desc, 
 																											 &m_renderTargetView);
@@ -87,13 +76,6 @@ RenderTargetView::init(Device& device,
 	return S_OK;
 }
 
-/**
- * @brief Establece la vista de destino de renderizado y la vista de plantilla de profundidad.
- * @param deviceContext El contexto del dispositivo Direct3D.
- * @param depthStencilView La vista de plantilla de profundidad.
- * @param numViews El número de vistas de destino de renderizado.
- * @param ClearColor El color para limpiar la vista de destino de renderizado.
- */
 void 
 RenderTargetView::render(DeviceContext& deviceContext, 
 												 DepthStencilView& depthStencilView, 
@@ -108,18 +90,15 @@ RenderTargetView::render(DeviceContext& deviceContext,
 		return;
 	}
 
+	// Clear the render target view
 	deviceContext.m_deviceContext->ClearRenderTargetView(m_renderTargetView, ClearColor);
 
+	// Config render target view and depth stencil view
 	deviceContext.m_deviceContext->OMSetRenderTargets(numViews, 
 																										&m_renderTargetView, 
 																										depthStencilView.m_depthStencilView);
 }
 
-/**
- * @brief Establece la vista de destino de renderizado.
- * @param deviceContext El contexto del dispositivo Direct3D.
- * @param numViews El número de vistas de destino de renderizado.
- */
 void 
 RenderTargetView::render(DeviceContext& deviceContext, unsigned int numViews) {
 	if (!deviceContext.m_deviceContext) {
@@ -130,14 +109,12 @@ RenderTargetView::render(DeviceContext& deviceContext, unsigned int numViews) {
 		ERROR("RenderTargetView", "render", "RenderTargetView is nullptr.");
 		return;
 	}
+	// Config render target view
 	deviceContext.m_deviceContext->OMSetRenderTargets(numViews, 
 																										&m_renderTargetView, 
 																										nullptr);
 }
 
-/**
- * @brief Libera los recursos de la vista de destino de renderizado.
- */
 void RenderTargetView::destroy() {
 	SAFE_RELEASE(m_renderTargetView);
 }

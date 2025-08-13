@@ -1,43 +1,41 @@
 ﻿#pragma once
 #include "Prerequisites.h"
+#include "ECS\Component.h"
 
 class DeviceContext;
 
-/**
- * @brief Clase que representa un componente de malla para renderizado 3D.
- */
 class
-  MeshComponent  {
+MeshComponent : public Component {
 public:
-    /**
-     * @brief Constructor que inicializa los contadores de vértices e índices.
-     */
-    MeshComponent() : m_numVertex(0), m_numIndex(0) {}
+    MeshComponent() : m_numVertex(0), m_numIndex(0), Component(ComponentType::MESH) {}
 
-    /**
-     * @brief Destructor virtual por defecto.
-     */
     virtual
     ~MeshComponent() = default;
 
+    void
+    init() override {};
+  
     /**
-     * @brief Actualiza el estado de la malla.
-     * @param deltaTime Tiempo transcurrido desde la última actualización en segundos.
+     * @brief Actualiza el actor.
+     * @param deltaTime El tiempo transcurrido desde la última actualización.
+     * @param deviceContext Contexto del dispositivo para operaciones gráficas.
      */
     void
-    update(float deltaTime)  {}
+    update(float deltaTime) override {}
 
     /**
-     * @brief Renderiza la malla utilizando el contexto del dispositivo proporcionado.
-     * @param deviceContext Referencia al contexto del dispositivo para el renderizado.
+     * @brief Renderiza el actor.
+     * @param deviceContext Contexto del dispositivo para operaciones gráficas.
      */
     void
-    render(DeviceContext& deviceContext) {}
-    
+    render(DeviceContext& deviceContext) override {}
+
+    void 
+    destroy() override {}
 public:
-    std::string m_name;             ///< Nombre de la malla
-    std::vector<SimpleVertex> m_vertex;  ///< Vector de vértices de la malla
-    std::vector<unsigned int> m_index;   ///< Vector de índices para definir la topología
-    int m_numVertex;                ///< Número total de vértices
-    int m_numIndex;                 ///< Número total de índices
+    std::string m_name;
+    std::vector<SimpleVertex> m_vertex;
+    std::vector<unsigned int> m_index;
+    int m_numVertex;
+    int m_numIndex;
 };
